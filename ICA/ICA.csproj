@@ -23,7 +23,12 @@
     <Version>1.0.0</Version>
     <Product>ICA</Product>
     <Description>Internet Connection Available</Description>
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
@@ -31,4 +36,10 @@
     <PackageReference Include="WPF-UI" Version="4.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
+
+

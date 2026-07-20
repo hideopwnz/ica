@@ -1,0 +1,29 @@
+﻿<Window x:Class="ICA.Views.WidgetWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ICA"
+        Width="260" Height="100"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Border CornerRadius="12" Padding="16" Margin="8"
+            Background="{Binding StatusBrush}">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="16" ShadowDepth="4" Opacity="0.3"/>
+        </Border.Effect>
+
+        <TextBlock Text="{Binding StatusText}"
+                   FontSize="16"
+                   FontWeight="SemiBold"
+                   Foreground="White"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Center"/>
+    </Border>
+</Window>
