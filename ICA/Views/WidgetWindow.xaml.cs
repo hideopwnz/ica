@@ -21,7 +21,7 @@ public partial class WidgetWindow : Window
 
         _autoHideTimer = new DispatcherTimer
         {
-            Interval = TimeSpan.FromSeconds(5)
+            Interval = TimeSpan.FromSeconds(3)
         };
         _autoHideTimer.Tick += (s, e) =>
         {
@@ -77,3 +77,4 @@ public partial class WidgetWindow : Window
         Hide();
     }
 }
+
