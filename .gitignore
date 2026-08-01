@@ -14,3 +14,7 @@ Desktop.ini
 
 # Icon source
 ica.png
+
+# User images
+*.png
+*.jpg
