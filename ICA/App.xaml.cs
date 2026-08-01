@@ -33,7 +33,7 @@ public partial class App : Application
         var viewModel = new WidgetViewModel(_monitor);
         var widget = new WidgetWindow(viewModel);
 
-        _tray = new TrayService(widget, autostart);
+        _tray = new TrayService(widget, autostart, _monitor);
         _tray.Initialize();
 
         // оказать виджет при смене статуса
@@ -93,5 +93,6 @@ public class AppConfig
         }
     };
 }
+
 
 

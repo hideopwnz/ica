@@ -4,21 +4,19 @@ namespace ICA.Services;
 
 public class HttpsCheckService
 {
-    private static readonly HttpClient _client;
     private readonly string[] _sites;
+    private static readonly HttpClient _client;
 
     static HttpsCheckService()
     {
         var handler = new HttpClientHandler
         {
+            UseProxy = false,
             ServerCertificateCustomValidationCallback =
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         };
-        _client = new HttpClient(handler)
-        {
-            Timeout = TimeSpan.FromSeconds(3)
-        };
-        _client.DefaultRequestHeaders.Add("User-Agent", "ICA/1.0");
+        _client = new HttpClient(handler);
+        _client.Timeout = TimeSpan.FromSeconds(5);
     }
 
     public HttpsCheckService(string[] sites)
@@ -33,12 +31,12 @@ public class HttpsCheckService
         return results.Any(r => r);
     }
 
-    private static async Task<bool> CheckSiteAsync(string url)
+    private async Task<bool> CheckSiteAsync(string site)
     {
         try
         {
-            var response = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-            return (int)response.StatusCode < 400;
+            var response = await _client.GetAsync(site);
+            return response.IsSuccessStatusCode;
         }
         catch
         {
@@ -46,3 +44,4 @@ public class HttpsCheckService
         }
     }
 }
+
