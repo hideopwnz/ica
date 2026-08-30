@@ -36,19 +36,22 @@ public partial class App : Application
         _tray = new TrayService(widget, autostart, _monitor);
         _tray.Initialize();
 
-        // оказать виджет при смене статуса
+        // Показать виджет при смене статуса
         _monitor.StatusChanged += _ =>
         {
             Dispatcher.Invoke(() => widget.Show());
         };
 
-        // роверка обновлений
+        // Проверка обновлений
         var updater = new UpdateService();
         await updater.CheckAndUpdateAsync();
 
-        // апуск мониторинга
+        // Запуск мониторинга
         _cts = new CancellationTokenSource();
         _ = _monitor.StartAsync(_cts.Token);
+
+        // Показываем виджет сразу при старте, чтобы отобразить начальный статус
+        widget.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -93,6 +96,3 @@ public class AppConfig
         }
     };
 }
-
-
-

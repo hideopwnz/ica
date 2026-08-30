@@ -15,7 +15,7 @@ public partial class WidgetViewModel : ObservableObject
     private ConnectionStatus _status = ConnectionStatus.Offline;
 
     [ObservableProperty]
-    private string _statusText = "Проверка...";
+    private string _statusText = "Интернет отсутствует";
 
     [ObservableProperty]
     private SolidColorBrush _statusBrush = new((Color)ColorConverter.ConvertFromString("#F44336")) { Opacity = 0.95 };

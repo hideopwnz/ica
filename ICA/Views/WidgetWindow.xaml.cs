@@ -77,4 +77,3 @@ public partial class WidgetWindow : Window
         Hide();
     }
 }
-
