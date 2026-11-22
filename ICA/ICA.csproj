@@ -20,7 +20,7 @@
     <!-- Assembly Info -->
     <AssemblyName>ICA</AssemblyName>
     <RootNamespace>ICA</RootNamespace>
-    <Version>1.0.9</Version>
+    <Version>1.1.0</Version>
     <Product>ICA</Product>
     <Description>Internet Connection Available</Description>
     <ApplicationIcon>Assets\green.ico</ApplicationIcon>
@@ -42,6 +42,7 @@
   </ItemGroup>
 
 </Project>
+
 
 
 

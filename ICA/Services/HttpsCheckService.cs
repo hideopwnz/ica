@@ -12,6 +12,7 @@ public class HttpsCheckService
         var handler = new HttpClientHandler
         {
             UseProxy = false,
+            AllowAutoRedirect = false,
             ServerCertificateCustomValidationCallback =
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
         };
@@ -26,17 +27,24 @@ public class HttpsCheckService
 
     public async Task<bool> IsInternetAvailableAsync()
     {
-        var tasks = _sites.Select(site => CheckSiteAsync(site)).ToArray();
-        var results = await Task.WhenAll(tasks);
-        return results.Any(r => r);
+        // Ранний выход: первый ответивший сайт = интернет есть.
+        // Остальные не опрашиваются -> трафик в 3 раза меньше.
+        foreach (var site in _sites)
+        {
+            if (await CheckSiteAsync(site))
+                return true;
+        }
+        return false;
     }
 
     private async Task<bool> CheckSiteAsync(string site)
     {
         try
         {
-            var response = await _client.GetAsync(site);
-            return response.IsSuccessStatusCode;
+            using var req = new HttpRequestMessage(HttpMethod.Head, site);
+            using var resp = await _client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
+            // Любой HTTP-ответ доказывает связность (даже 405 на HEAD).
+            return true;
         }
         catch
         {
@@ -44,4 +52,3 @@ public class HttpsCheckService
         }
     }
 }
-

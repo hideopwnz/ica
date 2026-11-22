@@ -61,19 +61,46 @@ public partial class App : Application
         base.OnExit(e);
     }
 
+    private static readonly string[] LegacySites =
+    {
+        "https://ya.ru",
+        "https://www.google.com",
+        "https://www.cloudflare.com"
+    };
+
     private static AppConfig LoadConfig()
     {
         var path = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+        var opts = new JsonSerializerOptions { WriteIndented = true };
+
+        AppConfig cfg;
 
         if (File.Exists(path))
         {
-            var json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<AppConfig>(json) ?? AppConfig.Default;
+            try
+            {
+                cfg = JsonSerializer.Deserialize<AppConfig>(File.ReadAllText(path)) ?? AppConfig.Default;
+            }
+            catch
+            {
+                cfg = AppConfig.Default;
+            }
+
+            // Миграция: если набор сайтов — старый дефолт, меняем на новый RU-набор.
+            // Пользовательский список не трогаем.
+            if (cfg.Sites.Length == 0 ||
+                cfg.Sites.SequenceEqual(LegacySites, StringComparer.OrdinalIgnoreCase))
+            {
+                cfg.Sites = AppConfig.Default.Sites;
+                File.WriteAllText(path, JsonSerializer.Serialize(cfg, opts));
+            }
+        }
+        else
+        {
+            cfg = AppConfig.Default;
+            File.WriteAllText(path, JsonSerializer.Serialize(cfg, opts));
         }
 
-        var cfg = AppConfig.Default;
-        var opts = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(path, JsonSerializer.Serialize(cfg, opts));
         return cfg;
     }
 }
@@ -91,8 +118,9 @@ public class AppConfig
         Sites = new[]
         {
             "https://ya.ru",
-            "https://www.google.com",
-            "https://www.cloudflare.com"
+            "https://yandex.ru/favicon.ico",
+            "https://vk.com",
+            "http://cp.cloudflare.com/generate_204"
         }
     };
 }
